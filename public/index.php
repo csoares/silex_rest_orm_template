@@ -16,7 +16,11 @@ $app['db.connection.default.user'] = "root";
 $app['db.connection.default.password'] = "root";
 
 
-R::setup( "{$app['db.connection.default.driver']}:host={$app['db.connection.default.host']};dbname={$app['db.connection.default.name']}", $app['db.connection.default.user'], $app['db.connection.default.password'] );
+R::setup( 
+"{$app['db.connection.default.driver']}:host={$app['db.connection.default.host']};dbname={$app['db.connection.default.name']}", 
+$app['db.connection.default.user'], 
+$app['db.connection.default.password'] 
+);
 
 // SELECT
 $app->get('/obtain/{id}', function ($id) use ($app) {
@@ -46,11 +50,12 @@ $app->get('/books/{offset}/{limit}', function ($offset, $limit) use ($app) {
 $app->put('/edit/{id}',function (Request $request,$id) use ($app){
     $data = json_decode($request->getContent(), true);
     $book = R::findOne('books', 'id = ?', [(int)$id]);
-       
+    $book->import($data);
+    /*
     $book->title=$data['title'];
     $book->author=$data['author'];
     $book->isbn=$data['isbn'];
-    
+    */
     R::store( $book );
     return $app->json($data, 200);
     
@@ -61,9 +66,7 @@ $app->put('/edit/{id}',function (Request $request,$id) use ($app){
 $app->post('/book', function(Request $request) use ($app) {
     $data = json_decode($request->getContent(), true); // load the received json data
     $book=R::dispense('books');
-    $book->title=$data['title'];
-    $book->author=$data['author'];
-    $book->isbn=$data['isbn'];
+    $book->import($data);
 
     $id=R::store($book);
     
