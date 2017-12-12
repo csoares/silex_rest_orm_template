@@ -1,0 +1,20 @@
+{
+    "name": "vagrant/silexrest",
+    "require": {
+        "silex/silex": "^2.2",
+        "symfony/serializer": "^3.3",
+        "gabordemooij/redbean": "dev-master"        
+    },
+    "scripts": {
+        "run": [
+            "echo 'Started web server on http://localhost:8888'",
+            "php -S localhost:8888 -t public"
+        ]
+    },
+    "authors": [
+        {
+            "name": "Christophe Soares",
+            "email": "soareschristophe@gmail.com"
+        }
+    ]
+}
